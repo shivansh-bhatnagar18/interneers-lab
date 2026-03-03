@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from mongoengine import connect
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,8 +33,11 @@ REST_FRAMEWORK = {
 'PAGE_SIZE': 5
 }
 
-
-# Application definition
+connect(
+    db="mydatabase",
+    host="mongodb://root:example@localhost:27019/mydatabase?authSource=admin",
+    alias="default"
+)
 
 INSTALLED_APPS = [
     'django.contrib.admin',

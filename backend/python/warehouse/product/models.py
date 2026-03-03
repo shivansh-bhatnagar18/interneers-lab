@@ -1,14 +1,16 @@
 from django.db import models
+from mongoengine import StringField, FloatField, Document, IntField
 
 # Create your models here.
 
-class Product(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    description = models.TextField()
-    category = models.CharField(max_length=255)
-    brand = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.IntegerField()
+class Product(Document):
+    name = StringField(required=True, max_length=255)
+    description = StringField()
+    category = StringField(max_length=255)
+    brand = StringField(max_length=255)
+    price = FloatField(required=True, min_value=0)
+    quantity = IntField(required=True, min_value=0)
 
-    def __str__(self):
-        return self.name
+    meta = {
+        'collection': 'products',
+    }
