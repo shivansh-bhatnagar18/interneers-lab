@@ -1,5 +1,6 @@
 from django.db import models
-from mongoengine import StringField, FloatField, Document, IntField
+from mongoengine import StringField, FloatField, Document, IntField, DateTimeField
+from datetime import datetime
 
 # Create your models here.
 
@@ -10,6 +11,8 @@ class Product(Document):
     brand = StringField(max_length=255)
     price = FloatField(required=True, min_value=0)
     quantity = IntField(required=True, min_value=0)
+    created_at = DateTimeField(default=datetime.utcnow)
+    updated_at = DateTimeField(default=datetime.utcnow)
 
     meta = {
         'collection': 'products',
