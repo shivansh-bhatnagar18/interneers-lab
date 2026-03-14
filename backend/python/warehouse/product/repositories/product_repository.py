@@ -12,6 +12,9 @@ class ProductRepository:
     def get_by_id(self, product_id):
         return Product.objects(id=product_id).first()
     
+    def get_by_category(self, category_id):
+        return Product.objects(category=category_id)
+    
     def update_product(self, product_id, data):
         product = Product.objects(id=product_id).first()
         if product:

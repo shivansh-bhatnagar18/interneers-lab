@@ -16,6 +16,25 @@ class ProductService:
             raise ValueError("Price and quantity must be non-negative.")
         return self.repository.create_product(data)
     
+    def assign_category(self, product_id, category_id):
+        category = ProductCategory.objects(id=category_id).first()
+        if not category:
+            raise ValueError("Invalid category ID.")
+        product = self.repository.get_by_id(product_id)
+        if not product:
+            raise ValueError("Product not found.")
+        product.category = category
+        product.save()
+        return product
+    
+    def remove_category(self, product_id):
+        product = self.repository.get_by_id(product_id)
+        if not product:
+            raise ValueError("Product not found.")
+        product.category = None
+        product.save()
+        return product
+    
     def get_products(self):
         return self.repository.get_all()
     
@@ -24,6 +43,12 @@ class ProductService:
         if not product:
             raise ValueError("Product not found.")
         return product
+    
+    def get_products_by_category(self, category_id):
+        category = ProductCategory.objects(id=category_id).first()
+        if not category:
+            raise ValueError("Category not found.")
+        return self.repository.get_by_category(category_id)
     
     def update_product(self, product_id, data):
         updated = self.repository.update_product(product_id, data)

@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from product.controllers.product_controller import (
     ProductListCreateController,
-    ProductDetailController
+    ProductDetailController,
+    CategoryProductsController,
+    ProductCategoryController
 )
 from product_category.controllers.category_controller import CategoryListCreateController
 
@@ -27,4 +29,6 @@ urlpatterns = [
     path('products/', ProductListCreateController.as_view(), name='product-list-create'),
     path('products/<str:product_id>/', ProductDetailController.as_view(), name='product-detail'),
     path('categories/', CategoryListCreateController.as_view(), name='category-list-create'),
+    path('categories/<str:category_id>/products/', CategoryProductsController.as_view(), name='category-products'),
+    path('products/<str:product_id>/category/', ProductCategoryController.as_view(), name='product-category'),
 ]
