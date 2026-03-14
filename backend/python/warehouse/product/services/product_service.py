@@ -1,4 +1,5 @@
 from product.repositories.product_repository import ProductRepository
+from product_category.models import ProductCategory
 
 class ProductService:
 
@@ -6,6 +7,11 @@ class ProductService:
         self.repository = ProductRepository()
 
     def create_product(self, data):
+        category_id = data.get("category")
+        category = ProductCategory.objects(id=category_id).first()
+        if not category:
+            raise ValueError("Invalid category ID.")
+        data["category"] = category
         if (data["price"] < 0) or (data["quantity"] < 0):
             raise ValueError("Price and quantity must be non-negative.")
         return self.repository.create_product(data)

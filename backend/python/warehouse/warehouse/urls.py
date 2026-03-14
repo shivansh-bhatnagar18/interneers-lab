@@ -20,9 +20,11 @@ from product.controllers.product_controller import (
     ProductListCreateController,
     ProductDetailController
 )
+from product_category.controllers.category_controller import CategoryListCreateController
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', ProductListCreateController.as_view(), name='product-list-create'),
     path('products/<str:product_id>/', ProductDetailController.as_view(), name='product-detail'),
+    path('categories/', CategoryListCreateController.as_view(), name='category-list-create'),
 ]

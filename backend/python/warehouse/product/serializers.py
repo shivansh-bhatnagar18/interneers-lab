@@ -17,7 +17,10 @@ class ProductSerializer(serializers.Serializer):
             "id": str(instance.id),
             "name": instance.name,
             "description": instance.description,
-            "category": instance.category,
+            "category": {
+                "id": str(instance.category.id),
+                "title": instance.category.title
+            },
             "brand": instance.brand,
             "price": instance.price,
             "quantity": instance.quantity,
