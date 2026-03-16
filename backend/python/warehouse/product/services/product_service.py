@@ -16,6 +16,18 @@ class ProductService:
             raise ValueError("Price and quantity must be non-negative.")
         return self.repository.create_product(data)
     
+    def bulk_create_products(self, products_data):
+        created_products = []
+        for data in products_data:
+            category = ProductCategory.objects(id=data.get("category")).first()
+            if not category:
+                raise ValueError(f"Invalid category ID for product '{data.get('name')}'.")
+            data["category"] = category
+            if (data["price"] < 0) or (data["quantity"] < 0):
+                raise ValueError(f"Price and quantity must be non-negative for product '{data.get('name')}'.")
+            created_products.append(self.repository.create_product(data))
+        return created_products
+    
     def assign_category(self, product_id, category_id):
         category = ProductCategory.objects(id=category_id).first()
         if not category:

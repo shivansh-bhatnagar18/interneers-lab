@@ -3,6 +3,29 @@ from rest_framework.response import Response
 from rest_framework import status
 from product.serializers import ProductSerializer
 from product.services.product_service import ProductService
+import csv
+import io
+
+class ProductBulkUploadController(APIView):
+
+    def __init__(self):
+        self.service = ProductService()
+
+    def post(self, request):
+        file = request.FILES.get('file')
+        if not file:
+            return Response({"error": "CSV file is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            decoded_file = file.read().decode('utf-8')
+            io_string = io.StringIO(decoded_file)
+            reader = csv.DictReader(io_string)
+            products_data = list(reader)
+            created_products = self.service.bulk_create_products(products_data)
+            serializer = ProductSerializer(created_products, many=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class CategoryProductsController(APIView):
     def __init__(self):

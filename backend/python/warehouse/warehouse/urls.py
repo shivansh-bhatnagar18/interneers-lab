@@ -20,7 +20,8 @@ from product.controllers.product_controller import (
     ProductListCreateController,
     ProductDetailController,
     CategoryProductsController,
-    ProductCategoryController
+    ProductCategoryController,
+    ProductBulkUploadController
 )
 from product_category.controllers.category_controller import CategoryListCreateController
 
@@ -31,4 +32,5 @@ urlpatterns = [
     path('categories/', CategoryListCreateController.as_view(), name='category-list-create'),
     path('categories/<str:category_id>/products/', CategoryProductsController.as_view(), name='category-products'),
     path('products/<str:product_id>/category/', ProductCategoryController.as_view(), name='product-category'),
+    path('bulk-create/', ProductBulkUploadController.as_view(), name='product-bulk-create'),
 ]
